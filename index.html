@@ -170,7 +170,22 @@
 @media (prefers-reduced-motion:reduce){.slide *{transition:none!important;animation:none!important}}
 </style>
 <style>
-[data-target="derrama"],[data-section="derrama"]{order:1}[data-target="empresarios"],[data-section="empresarios"]{order:2}[data-target="vehicular"],[data-section="vehicular"]{order:3}[data-target="turistas"],[data-section="turistas"]{order:4}
+[data-target="derrama"],[data-section="derrama"]{order:1}[data-target="empresarios"],[data-section="empresarios"]{order:2}[data-target="vehicular"],[data-section="vehicular"]{order:3}[data-target="turistas"],[data-section="turistas"]{order:4}[data-target="conclusiones"],[data-section="conclusiones"]{order:5}
+
+/* Corrección gráfica EMP-03: columnas verticales con altura proporcional */
+.emp-scale{height:210px;align-items:stretch;padding-top:6px}
+.emp-scale>div{height:100%;display:grid;grid-template-rows:auto 1fr auto;align-items:end}
+.emp-scale>div>b{align-self:start}
+.emp-scale>div>i{width:100%;align-self:end;justify-self:stretch;min-height:8px;transform-origin:bottom;animation:growY .9s ease both}
+.emp-scale>div>span{align-self:end}
+@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+
+/* Navegación inferior restaurada */
+.bottom-nav{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:120;display:flex;align-items:center;gap:10px;padding:8px;background:rgba(8,26,43,.90);border:1px solid rgba(255,255,255,.16);border-radius:999px;box-shadow:0 12px 34px rgba(0,0,0,.20);backdrop-filter:blur(10px)}
+.bottom-nav button{width:46px;height:46px;border:0;border-radius:50%;background:#fff;color:#174A7E;font-size:23px;font-weight:900;cursor:pointer;display:grid;place-items:center;transition:transform .2s ease,background .2s ease}
+.bottom-nav button:hover{transform:translateY(-2px);background:#eef5fb}
+.bottom-nav .nav-home{width:auto;padding:0 17px;border-radius:999px;font-size:12px;letter-spacing:.04em}
+@media(max-width:620px){.bottom-nav{bottom:10px}.bottom-nav button{width:42px;height:42px}.bottom-nav .nav-home{display:none}}
 </style>
 </head>
 <body>
@@ -189,6 +204,11 @@
 <div id="indexList">
 </div>
 </aside>
+<nav class="bottom-nav" aria-label="Navegación de láminas">
+  <button type="button" onclick="prevSlide()" aria-label="Lámina anterior" title="Anterior">‹</button>
+  <button type="button" class="nav-home" onclick="goHomeFromNav()" aria-label="Ir a portada">PORTADA</button>
+  <button type="button" onclick="nextSlide()" aria-label="Lámina siguiente" title="Siguiente">›</button>
+</nav>
 <!-- ═══════════════ LÁMINA 01 · PORTADA · INICIO ═══════════════ --><section class="slide dark cover-slide" data-slide-id="01" data-title="Portada">
 <div aria-hidden="true" class="cover-media" id="coverMedia"></div><div class="cover-overlay"></div><div class="cover-glow"></div>
 <div class="slide-inner">
@@ -3709,6 +3729,7 @@
   }
   window.nextSlide = () => goTo(state.current + 1);
   window.prevSlide = () => goTo(state.current - 1);
+  window.goHomeFromNav = () => goTo(0);
   window.toggleIndex = (open) => index.classList.toggle('open', open === undefined ? !index.classList.contains('open') : open);
   window.fullscreen = () => !document.fullscreenElement ? document.documentElement.requestFullscreen?.() : document.exitFullscreen?.();
 
